@@ -1,96 +1,50 @@
 absl-py==2.0.0
 ale-py==0.8.1
-bluesky-guidata==2022.9.15
-bluesky-simdata==2022.9.15
-bluesky-simulator @ file:///D:/SCU2023/projects/DRL_lib/bluesky
 box2d-py==2.3.5
-brotlipy==0.7.0
-certifi @ file:///C:/b/abs_36eb5mzhph/croot/certifi_1690232276943/work/certifi
-cffi @ file:///C:/b/abs_49n3v2hyhr/croot/cffi_1670423218144/work
-charset-normalizer @ file:///tmp/build/80754af9/charset-normalizer_1630003229654/work
-cloudpickle==3.0.0
 colorama==0.4.6
-contourpy==1.1.1
-cryptography @ file:///C:/b/abs_f4do8t8jfs/croot/cryptography_1694444424531/work
+contourpy==1.2.0
 cycler==0.12.1
 Cython==0.29.36
 decorator==4.4.2
-etils==1.5.1
-Farama-Notifications==0.0.4
+etils==1.5.2
 fasteners==0.19
-filelock==3.12.4
-fonttools==4.43.1
+filelock==3.13.1
+fonttools==4.44.0
 fsspec==2023.10.0
 glfw==2.6.2
 gymnasium==0.29.1
-gymnasium-robotics==1.2.2
-idna @ file:///C:/b/abs_bdhbebrioa/croot/idna_1666125572046/work
 imageio==2.31.6
 imageio-ffmpeg==0.4.9
-importlib-metadata==6.8.0
 importlib-resources==6.1.0
-jax==0.4.19
-jax-jumpy==1.0.0
-jaxlib==0.4.19
+jax==0.4.20
+jaxlib==0.4.20
 Jinja2==3.1.2
 kiwisolver==1.4.5
-linkify-it-py==2.0.2
 lz4==4.3.2
-markdown-it-py==3.0.0
 MarkupSafe==2.1.3
-matplotlib==3.8.0
-mdit-py-plugins==0.4.0
-mdurl==0.1.2
-mkl-fft @ file:///C:/b/abs_19i1y8ykas/croot/mkl_fft_1695058226480/work
-mkl-random @ file:///C:/b/abs_edwkj1_o69/croot/mkl_random_1695059866750/work
+matplotlib==3.8.1
 mkl-service==2.4.0
 ml-dtypes==0.3.1
 moviepy==1.0.3
 mpmath==1.3.0
-msgpack==1.0.7
-mujoco==2.3.3
-networkx==3.2
-numpy==1.23.5
+mujoco==3.0.0
+mujoco-py==2.1.2.14
+networkx==3.2.1
 opencv-python==4.8.1.78
 opt-einsum==3.3.0
 packaging==23.2
-pandas==2.1.1
-pettingzoo==1.24.1
-Pillow @ file:///C:/b/abs_20ztcm8lgk/croot/pillow_1696580089746/work
 proglog==0.1.10
-pycparser @ file:///tmp/build/80754af9/pycparser_1636541352034/work
 pygame==2.5.2
-Pygments==2.16.1
 PyOpenGL==3.1.7
-pyOpenSSL @ file:///C:/b/abs_08f38zyck4/croot/pyopenssl_1690225407403/work
 pyparsing==3.1.1
-PyQt6==6.5.3
-PyQt6-Qt6==6.5.3
-PyQt6-sip==13.6.0
-PyQt6-WebEngine==6.5.0
-PyQt6-WebEngine-Qt6==6.5.3
-PySocks @ file:///C:/ci_310/pysocks_1642089375450/work
 python-dateutil==2.8.2
-pytz==2023.3.post1
-PyYAML==6.0.1
-pyzmq==25.1.1
-requests @ file:///C:/b/abs_316c2inijk/croot/requests_1690400295842/work
-rich==13.6.0
 scipy==1.11.3
 Shimmy==0.2.1
 six==1.16.0
 swig==4.1.1
 sympy==1.12
-textual==0.40.0
-torch==1.12.1
+torch==2.1.0
 torchaudio==0.12.1
 torchvision==0.13.1
 tqdm==4.66.1
-typing_extensions @ file:///C:/b/abs_213vg2cd1l/croot/typing_extensions_1690297804941/work
-tzdata==2023.3
-uc-micro-py==1.0.2
-urllib3 @ file:///C:/b/abs_889_loyqv4/croot/urllib3_1686163174463/work
-win-inet-pton @ file:///C:/ci_310/win_inet_pton_1642658466512/work
-xmltodict==0.13.0
 zipp==3.17.0
-zmq==0.0.0
