@@ -23,3 +23,5 @@ pip install -r requirements.txt
 
 ## Reference
 1. [PyTorch](https://pytorch.org/)
+2. [Spinning Up in Deep RL](https://openai.com/research/spinning-up-in-deep-rl)
+3. [Gymnasium](https://gymnasium.farama.org/)
