@@ -3,7 +3,12 @@
 ## Introduction
 A Deep Reinforcement Learning library based on PyTorch.
 
-## Installation
+## Requirements
+- Python 3.10
+- PyTorch 1.12.1
+- Gymnasium 0.29.1
+- CUDA 11.3
+- ...
 ```
 pip install -r requirements.txt
 ```
