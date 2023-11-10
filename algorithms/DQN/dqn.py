@@ -58,8 +58,8 @@ class DQNAgent:
         states, actions, rewards, next_states, dones = self.replay_buffer.sample(self.cfgs.batch_size)
         print(actions.shape)
         if self.cfgs.double:
-            next_actions = self.local_net(next_states).argmax(dim=1, keepdim=True)
-            next_q_values = self.target_net(next_states).gather(1, next_actions).squeeze(1)
+            next_actions = self.local_net(next_states).argmax(dim=1, keepdim=True).detach()
+            next_q_values = self.target_net(next_states).gather(1, next_actions).detach()
         else:
             next_q_values = self.target_net(next_states).max(1)[0].detach().unsqueeze(1)
         q_target = rewards + self.cfgs.gamma * next_q_values * (1 - dones)

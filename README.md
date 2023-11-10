@@ -14,8 +14,8 @@ pip install -r requirements.txt
 ```
 
 ## TODO
-- [ ] DQN
-- [ ] Double DQN
+- [x] DQN
+- [x] Double DQN
 - [ ] Dueling DQN
 - [ ] Prioritized Experience Replay
 - [ ] Deep Deterministic Policy Gradient
