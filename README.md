@@ -15,7 +15,7 @@ pip install -r requirements.txt
 
 ## TODO
 - [x] Q-Learning
-- [ ] SARSA
+- [x] SARSA
 - [x] DQN
 - [x] Double DQN
 - [x] Dueling DQN
