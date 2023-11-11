@@ -4,6 +4,8 @@ import gymnasium as gym
 
 import os
 
+import torch
+
 from utils.agents import Agents
 from utils.eval_mode import eval_mode
 from utils.set_seed import SetSeed
@@ -21,8 +23,9 @@ class Workspace:
         self.env = gym.make(self.args.env, render_mode='human')
         state_dim = self.env.observation_space.shape
         action_dim = self.env.action_space.n
+        print("State dimension: {}\nAction dimension: {}".format(state_dim, action_dim))
 
-        self.agent = Agents.get_agent(self.args.algo, state_dim=state_dim, action_dim=action_dim,
+        self.agent = Agents.get_agent(self.args.algo, state_size=state_dim, action_size=action_dim,
                                       device=self.args.device)
         pass
 
@@ -33,7 +36,6 @@ class Workspace:
             while not terminated:
                 with eval_mode(self.agent):
                     action = self.agent.act(observation)
-                    print(action)
                 next_observation, reward, terminated, truncated, info = self.env.step(action)
                 self.agent.replay_buffer.store(observation, action, reward, next_observation, terminated)
                 self.agent.step()
@@ -54,10 +56,11 @@ def main():
     import argparse
     work_dir = os.getcwd()
     current_time = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--curr_time', type=str, default=current_time)
-    parser.add_argument('--device', type=str, default='cuda')
+    parser.add_argument('--device', type=str, default=device)
     parser.add_argument('--work_dir', type=str, default=work_dir)
     parser.add_argument('--algo', type=str, default='DQN')
     parser.add_argument('--env', type=str, default='LunarLander-v2')

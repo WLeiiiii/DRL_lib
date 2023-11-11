@@ -1,42 +1,79 @@
+import random
+from collections import namedtuple, deque
+
 import numpy as np
 import torch
 
 
 class ReplayBuffer:
-    def __init__(self, state_dim, action_dim, buffer_size, device):
-        self.states = np.zeros((buffer_size, *state_dim), dtype=np.float32)
-        self.actions = np.zeros((buffer_size, 1), dtype=np.int64)
-        self.rewards = np.zeros((buffer_size, 1), dtype=np.float32)
-        self.costs = np.zeros((buffer_size, 1), dtype=np.float32)
-        self.next_states = np.zeros((buffer_size, *state_dim), dtype=np.float32)
-        self.terminates = np.zeros((buffer_size, 1), dtype=np.float32)
-        self.memory_counter = 0
-        self.buffer_size = buffer_size
+    def __init__(self, action_dim, buffer_size, device):
+        self.memory = deque(maxlen=buffer_size)
+        self.action_size = action_dim
+        self.experience = namedtuple(
+            "experience",
+            field_names=["state", "action", "reward", "next_state", "terminated"]
+        )
         self.device = device
+        pass
 
     def store(self, state, action, reward, next_state, terminated):
-        index = self.memory_counter % self.buffer_size
-        self.states[index] = state
-        self.actions[index] = action
-        self.rewards[index] = reward
-        self.next_states[index] = next_state
-        self.terminates[index] = terminated
-        self.memory_counter += 1
+        self.memory.append(self.experience(state, action, reward, next_state, terminated))
+        pass
 
     def sample(self, batch_size):
-        max_mem = min(self.memory_counter, self.buffer_size)
-        batch_indices = np.random.choice(max_mem, batch_size, replace=False)
-
-        states = torch.from_numpy(self.states[batch_indices]).to(self.device)
-        actions = torch.from_numpy(self.actions[batch_indices]).to(self.device)
-        rewards = torch.from_numpy(self.rewards[batch_indices]).to(self.device)
-        next_states = torch.from_numpy(self.next_states[batch_indices]).to(self.device)
-        terminates = torch.from_numpy(self.terminates[batch_indices]).to(self.device)
+        experiences = random.sample(self.memory, k=batch_size)
+        states = torch.from_numpy(np.vstack([e.state for e in experiences if e is not None])).float().to(self.device)
+        actions = torch.from_numpy(np.vstack([e.action for e in experiences if e is not None])).long().to(self.device)
+        rewards = torch.from_numpy(np.vstack([e.reward for e in experiences if e is not None])).float().to(self.device)
+        next_states = torch.from_numpy(np.vstack([e.next_state for e in experiences if e is not None])).float().to(
+            self.device)
+        terminates = torch.from_numpy(
+            np.vstack([e.terminated for e in experiences if e is not None]).astype(np.uint8)).float().to(self.device)
 
         return states, actions, rewards, next_states, terminates
 
     def __len__(self):
-        return min(self.memory_counter, self.buffer_size)
+        return len(self.memory)
+
+
+class ReplayBufferCNN:
+    def __init__(self, action_dim, buffer_size, device):
+        self.memory = deque(maxlen=buffer_size)
+        self.action_size = action_dim
+        self.experience = namedtuple(
+            "experience",
+            field_names=["state", "action", "reward", "next_state", "terminated"]
+        )
+        self.device = device
+        pass
+
+    def store(self, state, action, reward, next_state, terminated):
+        self.memory.append(self.experience(state, action, reward, next_state, terminated))
+        pass
+
+    def sample(self, batch_size):
+        experiences = random.sample(self.memory, k=batch_size)
+
+        states = np.array([e.state for e in experiences if e is not None])
+        actions = np.array([e.action for e in experiences if e is not None])
+        rewards = np.array([e.reward for e in experiences if e is not None])
+        next_states = np.array([e.next_state for e in experiences if e is not None])
+        terminates = np.array([e.terminated for e in experiences if e is not None])
+
+        # Check if the stacking resulted in the expected shape
+        assert states.shape == (batch_size, 210, 160, 3), f"States shape mismatch: {states.shape}"
+
+        # Now convert to PyTorch tensors
+        states = torch.from_numpy(states).float().permute(0, 3, 1, 2).to(self.device)  # Reshape to (N, C, H, W)
+        next_states = torch.from_numpy(next_states).float().permute(0, 3, 1, 2).to(self.device)
+        actions = torch.from_numpy(actions).long().unsqueeze(-1).to(self.device)
+        rewards = torch.from_numpy(rewards).float().unsqueeze(-1).to(self.device)
+        terminates = torch.from_numpy(terminates.astype(np.uint8)).unsqueeze(-1).float().to(self.device)
+
+        return states, actions, rewards, next_states, terminates
+
+    def __len__(self):
+        return len(self.memory)
 
 
 class PrioritizedReplayBuffer:
