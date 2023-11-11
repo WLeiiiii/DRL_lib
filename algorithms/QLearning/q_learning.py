@@ -1,9 +1,6 @@
 from collections import defaultdict
 
-import dill
-import gymnasium
 import numpy as np
-import torch
 
 from algorithms.QLearning.config import QLearningConfig
 
@@ -64,6 +61,8 @@ class QLearningAgent:
         """
         Save the Q-table to a file.
         """
+        import dill
+        import torch
         torch.save(
             obj=self.Q_table,
             f=path + "QLearning_model.pkl",
@@ -75,15 +74,18 @@ class QLearningAgent:
         """
         Load the Q-table from a file.
         """
+        import dill
+        import torch
         self.Q_table = torch.load(f=path + "QLearning_model.pkl", pickle_module=dill)
         print("Qlearning模型成功加载！")
 
 
 if __name__ == '__main__':
+    import gymnasium
+
     env = gymnasium.make("CliffWalking-v0", render_mode="human")
     state_dim = env.observation_space.n
     action_dim = env.action_space.n
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     agent = QLearningAgent(state_dim, action_dim)
     observation, info = env.reset(seed=0)
     eps_start = 1.0
