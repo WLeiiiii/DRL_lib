@@ -1,9 +1,10 @@
 from algorithms.DQN.dqn import DQNAgent
+from algorithms.QLearning.q_learning import QLearningAgent
 
 
 class Agents:
     agents = {
-        'q_learning': 'agents/q_learning.py',
+        'qlearning': QLearningAgent,
         'sarsa': 'agents/sarsa.py',
         'dqn': DQNAgent,
         'ddpg': 'agents/ddpg_agent_simple_env.py',
