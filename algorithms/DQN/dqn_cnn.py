@@ -9,7 +9,7 @@ import gymnasium
 import torch
 
 from algorithms.DQN.config import DQNConfig
-from algorithms.DQN.models import QNetworkCNN
+from algorithms.DQN.models import QNetworkCNN, DuelQNetworkCNN
 from algorithms.DQN.replaybuffer import ReplayBufferCNN
 from algorithms.algo_utils import soft_update
 
@@ -21,10 +21,14 @@ class DQNAgentCNN:
         self.device = device
         self.cfgs = DQNConfig()  # Configuration parameters for the DQN agent
 
-        # Local network is the Q-Network that will be trained
-        self.local_net = QNetworkCNN(self.state_dim, self.action_dim).to(self.device)
-        # Target network is used to compute the stable target Q-values
-        self.target_net = QNetworkCNN(self.state_dim, self.action_dim).to(self.device)
+        if self.cfgs.dueling:
+            # Local network is the Q-Network that will be trained
+            self.local_net = DuelQNetworkCNN(self.state_dim, self.action_dim).to(self.device)
+            # Target network is used to compute the stable target Q-values
+            self.target_net = DuelQNetworkCNN(self.state_dim, self.action_dim).to(self.device)
+        else:
+            self.local_net = QNetworkCNN(self.state_dim, self.action_dim).to(self.device)
+            self.target_net = QNetworkCNN(self.state_dim, self.action_dim).to(self.device)
         self.target_net.load_state_dict(self.local_net.state_dict())
         self.optimizer = torch.optim.Adam(self.local_net.parameters(), lr=self.cfgs.learning_rate)
 
