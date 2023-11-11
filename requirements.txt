@@ -49,3 +49,6 @@ torchaudio==0.12.1
 torchvision==0.13.1
 tqdm==4.66.1
 zipp==3.17.0
+
+numpy>=1.26.0
+dill>=0.3.7

@@ -6,16 +6,6 @@ import numpy as np
 import torch
 
 from algorithms.QLearning.config import QLearningConfig
-import numpy as np
-import torch
-import dill
-from collections import defaultdict
-
-
-class QLearningConfig:
-    # Placeholder for actual configuration values
-    gamma = 0.95
-    learning_rate = 0.01
 
 
 class QLearningAgent:
@@ -75,9 +65,6 @@ class QLearningAgent:
     def save(self, path):
         """
         Save the Q-table to a file.
-
-        Parameters:
-        - path (str): The file path where the Q-table will be saved.
         """
         torch.save(
             obj=self.Q_table,
@@ -89,9 +76,6 @@ class QLearningAgent:
     def load(self, path):
         """
         Load the Q-table from a file.
-
-        Parameters:
-        - path (str): The file path from where the Q-table will be loaded.
         """
         self.Q_table = torch.load(f=path + "QLearning_model.pkl", pickle_module=dill)
         print("Qlearning模型成功加载！")
