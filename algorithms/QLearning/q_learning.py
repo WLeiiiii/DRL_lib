@@ -9,18 +9,16 @@ from algorithms.QLearning.config import QLearningConfig
 
 
 class QLearningAgent:
-    def __init__(self, state_size, action_size, device):
+    def __init__(self, state_size, action_size):
         """
         Q-Learning Agent constructor.
 
         Parameters:
         - state_size (int): Dimensionality of the state space.
         - action_size (int): Number of possible actions.
-        - device (torch.device): Device on which the agent runs.
         """
         self.state_dim = state_size
         self.action_dim = action_size
-        self.device = device
         self.cfgs = QLearningConfig()
         # Initialize the Q-table, mapping each state to action values
         self.Q_table = defaultdict(lambda: np.zeros(action_size))
@@ -86,7 +84,7 @@ if __name__ == '__main__':
     state_dim = env.observation_space.n
     action_dim = env.action_space.n
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    agent = QLearningAgent(state_dim, action_dim, device)
+    agent = QLearningAgent(state_dim, action_dim)
     observation, info = env.reset(seed=0)
     eps_start = 1.0
     eps_end = 0.01
