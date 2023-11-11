@@ -14,13 +14,13 @@
 
 $$ Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha [ R_{t+1} + \gamma Q(S_{t+1}, A_{t+1}) - Q(S_t, A_t) ] $$
 
-其中$ A_{t+1} $是根据当前策略从$ S_{t+1} $选择的下一个动作。
+其中 $ A_{t+1} $ 是根据当前策略从 $ S_{t+1} $选择的下一个动作。
 
 - **Q-Learning**的Q值更新公式为：
 
 $$ Q(St, At) \leftarrow Q(S_t, A_t) + \alpha [R_{t+1} + \gamma \max_a(Q(S_{t+1}, a)) - Q(S_t, A_t)] $$ 
 
-这里选择的是使$ Q(S_{t+1}, a) $最大化的动作$ a $，与实际执行的下一个动作无关。
+这里选择的是使 $ Q(S_{t+1}, a) $ 最大化的动作 $ a $，与实际执行的下一个动作无关。
 
 ## 探索与开发（Exploration and Exploitation）：
 
