@@ -15,7 +15,7 @@ from algorithms.DQN.replaybuffer import PrioritizedReplayBuffer
 from algorithms.algo_utils import soft_update
 
 
-class DQNAgentPER:
+class PerDQNAgent:
     def __init__(self, state_size, action_size, device):
         # Initialization of the DQN Agent with prioritized experience replay
         self.state_dim = state_size[0]  # The dimension of the state space
@@ -129,7 +129,7 @@ if __name__ == "__main__":
 
     env = gymnasium.make("CartPole-v1", render_mode="human")
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    agent = DQNAgentPER(env.observation_space.shape, env.action_space.n, device)
+    agent = PerDQNAgent(env.observation_space.shape, env.action_space.n, device)
     observation, info = env.reset(seed=0)
     for _ in range(1000):
         terminated = False

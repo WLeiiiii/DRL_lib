@@ -1,13 +1,21 @@
+from algorithms.DDPG.ddpg import DDPGAgent
 from algorithms.DQN.dqn import DQNAgent
+from algorithms.DQN.dqn_cnn import DQNAgentCNN
+from algorithms.DQN.dqn_noisy import NoisyDQNAgent
+from algorithms.DQN.dqn_per import PerDQNAgent
 from algorithms.QLearning.q_learning import QLearningAgent
+from algorithms.SARSA.sarsa import SarsaAgent
 
 
 class Agents:
     agents = {
         'qlearning': QLearningAgent,
-        'sarsa': 'agents/sarsa.py',
+        'sarsa': SarsaAgent,
         'dqn': DQNAgent,
-        'ddpg': 'agents/ddpg_agent_simple_env.py',
+        'dqncnn': DQNAgentCNN,
+        'noisydqn': NoisyDQNAgent,
+        'perdqn': PerDQNAgent,
+        'ddpg': DDPGAgent,
     }
 
     @staticmethod
