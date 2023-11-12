@@ -5,7 +5,6 @@ Author: Wang lei
 Email: wl120964102@gmail.com
 """
 import os
-import gymnasium
 import torch
 
 from algorithms.DQN.config import DQNConfig
@@ -20,6 +19,8 @@ class DQNAgentCNN:
         self.action_dim = action_size
         self.device = device
         self.cfgs = DQNConfig()  # Configuration parameters for the DQN agent
+        self.cfgs.hidden_dim = 512
+        self.cfgs.__information__()
 
         if self.cfgs.dueling:
             # Local network is the Q-Network that will be trained
@@ -92,15 +93,15 @@ class DQNAgentCNN:
 
     def save(self, path):
         torch.save(self.local_net.state_dict(), os.path.join(path, "q_cnn_network.pth"))
-        pass
 
     def load(self, path):
         self.local_net.load_state_dict(torch.load(os.path.join(path, "q_cnn_network.pth")))
         self.target_net.load_state_dict(self.local_net.state_dict())
-        pass
 
 
 if __name__ == "__main__":
+    import gymnasium
+
     env = gymnasium.make("ALE/Pong-v5", render_mode="human")
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(env.observation_space.shape, env.action_space.n)
