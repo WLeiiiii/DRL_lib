@@ -8,7 +8,7 @@ from algorithms.MonteCarlo.config import MonteCarloConfig
 class MonteCarloAgent:
     def __init__(self, state_size, action_size):
         """
-        Monte Carlo Agent constructor.
+        Single-step Monte Carlo Agent constructor.
         :param state_size:
         :param action_size:
         """
