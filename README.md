@@ -20,6 +20,7 @@ pip install -r requirements.txt
 
 - [x] [Q-Learning](algorithms/QLearning/q_learning.py)
 - [x] [SARSA](algorithms/SARSA/sarsa.py)
+- [x] [Monte Carlo](algorithms/MonteCarlo/single_step_monte_carlo.py)
 - [x] [DQN](algorithms/DQN/dqn.py)
 - [x] [Double DQN](algorithms/DQN/dqn.py)
 - [x] [Dueling DQN](algorithms/DQN/dqn.py)
