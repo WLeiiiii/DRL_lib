@@ -26,6 +26,7 @@ pip install -r requirements.txt
 - [x] [Dueling DQN](algorithms/DQN/dqn.py)
 - [x] [Prioritized Experience Replay DQN](algorithms/DQN/dqn_per.py)
 - [x] [DQN with NoisyNet](algorithms/DQN/dqn_noisy.py)
+- [x] [Distributional DQN(C51)](algorithms/DQN/dqn_c51.py)
 - [ ] Deep Deterministic Policy Gradient
 - [ ] Twin Delayed Deep Deterministic Policy Gradient
 - [ ] Soft Actor-Critic

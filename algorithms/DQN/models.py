@@ -46,7 +46,7 @@ class QNetworkCNN(nn.Module):
         return self.features(autograd.Variable(torch.zeros(1, *self.input_dim))).view(1, -1).size(1)
 
     def forward(self, x):
-        x = self.features(x)
+        x = self.features(x / 255.0)
         x = x.reshape(x.size(0), -1)
         return self.fc(x)
 
@@ -125,7 +125,7 @@ class DuelQNetworkCNN(nn.Module):
 
     def forward(self, x):
         # Feature extraction
-        x = self.features(x)
+        x = self.features(x / 255.0)
         x = x.reshape(x.size(0), -1)
 
         # Value stream
@@ -137,3 +137,40 @@ class DuelQNetworkCNN(nn.Module):
         # Combine value and advantage streams to get Q-values
         # Q(s, a) = V(s) + (A(s, a) - mean(A(s, a)))
         return value + advantage - advantage.mean()
+
+
+class C51Net(nn.Module):
+    def __init__(self, input_dim, output_dim, atoms_dim=51):
+        super().__init__()
+        channel_dim = input_dim[2]
+        height_dim = input_dim[0]
+        width_dim = input_dim[1]
+        self.input_dim = (channel_dim, height_dim, width_dim)
+        self.output_dim = output_dim
+        self.atoms_dim = atoms_dim
+
+        self.features = nn.Sequential(
+            nn.Conv2d(self.input_dim[0], 32, kernel_size=8, stride=4),
+            nn.ReLU(),
+            nn.Conv2d(32, 64, kernel_size=4, stride=2),
+            nn.ReLU(),
+            nn.Conv2d(64, 64, kernel_size=3, stride=1),
+            nn.ReLU()
+        )
+
+        self.fc = nn.Sequential(
+            nn.Linear(self.feature_size(), 512),
+            nn.ReLU(),
+            nn.Linear(512, self.output_dim * self.atoms_dim)
+        )
+
+    def feature_size(self):
+        # Use the reordered self.input_dim to create a dummy input for size calculation
+        return self.features(autograd.Variable(torch.zeros(1, *self.input_dim))).view(1, -1).size(1)
+
+    def forward(self, x):
+        x = self.features(x / 255.0)
+        x = x.reshape(x.size(0), -1)
+        x = self.fc(x)
+        x = x.reshape(x.size(0), self.output_dim, self.atoms_dim)
+        return nn.functional.softmax(x, dim=-1)
