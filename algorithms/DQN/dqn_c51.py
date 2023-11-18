@@ -1,6 +1,7 @@
 import math
 import os
 
+import numpy as np
 import torch
 
 from algorithms.DQN.config import C51Config
@@ -142,28 +143,27 @@ class C51Agent:
         :return: The projected distribution.
         """
         # Initialize the projected distribution as a zero tensor with the same shape as the target distribution.
-        projected_dist = torch.zeros_like(q_target_next_dist)
+        projected_dist = torch.zeros_like(q_target_next_dist, device=self.device)
 
-        # Project the target distribution for each batch item individually.
-        for i in range(self.cfgs.batch_size):
-            if dones[i]:
-                # Handle terminal states.
-                Tz = min(self.cfgs.v_max, max(self.cfgs.v_min, rewards[i]))
-                b = (Tz - self.cfgs.v_min) / self.cfgs.delta_z
-                l = int(b)
-                u = int(math.ceil(b))
-                projected_dist[i, l] += (u - b)
-                projected_dist[i, u] += (b - l)
-            else:
-                # Handle non-terminal states.
-                for j in range(self.cfgs.num_atoms):
-                    Tz = min(self.cfgs.v_max,
-                             max(self.cfgs.v_min, rewards[i] + self.cfgs.gamma * self.cfgs.z_values[j]))
-                    b = (Tz - self.cfgs.v_min) / self.cfgs.delta_z
-                    l = int(b)
-                    u = int(math.ceil(b))
-                    projected_dist[i, l] += q_target_next_dist[i, j] * (u - b).item()
-                    projected_dist[i, u] += q_target_next_dist[i, j] * (b - l).item()
+        # Calculate Tz using broadcasting, clamp values to be within [v_min, v_max]
+        z_values = torch.from_numpy(np.array(self.cfgs.z_values)).float().to(self.device)
+        Tz = rewards.view(-1, 1) + self.cfgs.gamma * z_values * (1 - dones.view(-1, 1))
+        Tz = Tz.clamp(min=self.cfgs.v_min, max=self.cfgs.v_max)
+        b = (Tz - self.cfgs.v_min) / self.cfgs.delta_z
+
+        # Calculate lower and upper bounds
+        l = b.floor().to(torch.int64)
+        u = b.ceil().to(torch.int64)
+
+        # Use scatter_add_ for in-place update of the projected distribution
+        for j in range(self.cfgs.num_atoms):
+            # Calculate the contribution for the lower bound indices
+            l_index = l[:, j].unsqueeze(1).expand(-1, self.cfgs.num_atoms)
+            projected_dist.scatter_add_(1, l_index, (q_target_next_dist * (u - b)[:, j].unsqueeze(1)))
+
+            # Calculate the contribution for the upper bound indices
+            u_index = u[:, j].unsqueeze(1).expand(-1, self.cfgs.num_atoms)
+            projected_dist.scatter_add_(1, u_index, (q_target_next_dist * (b - l)[:, j].unsqueeze(1)))
 
         return projected_dist
 
@@ -188,8 +188,9 @@ class C51Agent:
 if __name__ == "__main__":
     import gymnasium
 
-    env = gymnasium.make("BreakoutNoFrameskip-v4", render_mode="human")
+    env = gymnasium.make("ALE/Pong-v5", render_mode="human")
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print(device)
     agent = C51Agent(env.observation_space.shape, env.action_space.n, device)
     observation, info = env.reset(seed=0)
     for _ in range(1000):
