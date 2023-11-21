@@ -188,7 +188,7 @@ class C51Agent:
 if __name__ == "__main__":
     import gymnasium
 
-    env = gymnasium.make("ALE/Pong-v5", render_mode="human")
+    env = gymnasium.make("BreakoutNoFrameskip-v4", render_mode="human")
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(device)
     agent = C51Agent(env.observation_space.shape, env.action_space.n, device)
