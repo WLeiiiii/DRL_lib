@@ -1,3 +1,9 @@
+#!/usr/bin/env python
+# coding=utf-8
+"""
+Author: Wang lei
+Email: wl120964102@gmail.com
+"""
 import torch
 from torch import nn
 
