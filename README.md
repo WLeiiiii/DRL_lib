@@ -31,7 +31,7 @@ pip install -r requirements.txt
 - [ ] Twin Delayed Deep Deterministic Policy Gradient
 - [ ] Soft Actor-Critic
 - [ ] Twin Delayed Soft Actor-Critic
-- [ ] Proximal Policy Optimization
+- [x] [Proximal Policy Optimization](algorithms/PPO/ppo.py)
 - [ ] Trust Region Policy Optimization
 - [ ] Asynchronous Advantage Actor-Critic
 - [ ] ...
