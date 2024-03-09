@@ -111,11 +111,9 @@ if __name__ == "__main__":
 
     env = gymnasium.make("MountainCarContinuous-v0", render_mode="human")
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-    # print(env.observation_space.shape, env.action_space.shape, env.action_space.high[0])
     max_action = env.action_space.high[0]
     agent = DDPGAgent(env.observation_space.shape[0], env.action_space.shape[0], max_action, device)
-    observation, _ = env.reset()
+    observation, info = env.reset(seed=0)
     for _ in range(1000):
         terminated = False
         while not terminated:
@@ -125,6 +123,7 @@ if __name__ == "__main__":
             agent.replay_buffer.store(observation, action, reward, next_observation, terminated)
             agent.step()
             observation = next_observation
-            if terminated:
-                observation = env.reset()
+            if terminated or truncated:
+                observation, info = env.reset()
+    env.close()
     pass
