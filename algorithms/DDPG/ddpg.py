@@ -6,12 +6,7 @@ import torch.nn.functional as F
 
 from algorithms.DDPG.models import Actor, Critic
 from algorithms.DDPG.replaybuffer import ReplayBuffer
-
-
-def soft_update(local_model, target_model, tau):
-    for target_param, local_param in zip(target_model.parameters(), local_model.parameters()):
-        target_param.data.copy_(tau * local_param.data + (1.0 - tau) * target_param.data)
-    pass
+from algorithms.algo_utils import soft_update
 
 
 class DDPGAgent:
