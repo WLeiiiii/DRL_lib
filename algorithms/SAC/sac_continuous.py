@@ -1,3 +1,5 @@
+import os
+
 import numpy as np
 import torch
 
@@ -118,6 +120,18 @@ class SACContinuousAgent:
         soft_update(self.critic_1, self.target_critic_1, self.tau)
         soft_update(self.critic_2, self.target_critic_2, self.tau)
         print("update!")
+        pass
+
+    def save(self, path):
+        torch.save(self.actor.state_dict(), os.path.join(path, "actor.pth"))
+        torch.save(self.critic_1.state_dict(), os.path.join(path, "critic_1.pth"))
+        torch.save(self.critic_2.state_dict(), os.path.join(path, "critic_2.pth"))
+        pass
+
+    def load(self, path):
+        self.actor.load_state_dict(torch.load(os.path.join(path, "actor.pth")))
+        self.critic_1.load_state_dict(torch.load(os.path.join(path, "critic_1.pth")))
+        self.critic_2.load_state_dict(torch.load(os.path.join(path, "critic_2.pth")))
         pass
 
 

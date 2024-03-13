@@ -4,6 +4,7 @@
 Author: Wang lei
 Email: wl120964102@gmail.com
 """
+import os
 from collections import namedtuple
 
 import numpy as np
@@ -101,6 +102,16 @@ class PPOAgent:
             torch.nn.utils.clip_grad_norm_(self.critic.parameters(), 0.5)
             self.critic_optimizer.step()
         self.replay_buffer.clear()
+        pass
+
+    def save(self, path):
+        torch.save(self.actor.state_dict(), os.path.join(path, "actor.pth"))
+        torch.save(self.critic.state_dict(), os.path.join(path, "critic.pth"))
+        pass
+
+    def load(self, path):
+        self.actor.load_state_dict(torch.load(os.path.join(path, "actor.pth")))
+        self.critic.load_state_dict(torch.load(os.path.join(path, "critic.pth")))
         pass
 
 
