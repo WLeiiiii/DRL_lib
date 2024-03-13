@@ -1,5 +1,7 @@
 # DRL_lib
 
+Status: Under development...
+
 ## Introduction
 
 A Deep Reinforcement Learning library based on PyTorch.
