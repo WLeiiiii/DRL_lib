@@ -31,10 +31,11 @@ pip install -r requirements.txt
 - [x] [Distributional DQN(C51)](algorithms/DQN/dqn_c51.py)
 - [x] [Deep Deterministic Policy Gradient(DDPG)](algorithms/DDPG/ddpg.py)
 - [x] [Twin Delayed Deep Deterministic Policy Gradient(TD3)](algorithms/DDPG/td3.py)
-- [x] [Soft Actor-Critic(Discrete)](algorithms/SAC/sac_discrete.py)
-- [x] [Soft Actor-Critic(Continuous)](algorithms/SAC/sac_continuous.py)
+- [x] [Soft Actor-Critic(SAC, Discrete)](algorithms/SAC/sac_discrete.py)
+- [x] [Soft Actor-Critic(SAC, Continuous)](algorithms/SAC/sac_continuous.py)
 - [ ] Twin Delayed Soft Actor-Critic
-- [x] [Proximal Policy Optimization](algorithms/PPO/ppo.py)
+- [x] [Proximal Policy Optimization(PPO, Discrete)](algorithms/PPO/ppo_discrete.py)
+- [x] [Proximal Policy Optimization(PPO, Continuous)](algorithms/PPO/ppo_continuous.py)
 - [ ] Trust Region Policy Optimization
 - [ ] Asynchronous Advantage Actor-Critic
 - [ ] ...
